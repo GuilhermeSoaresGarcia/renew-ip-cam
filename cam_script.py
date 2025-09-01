@@ -21,10 +21,10 @@ def open_cam(user, password, ip_start, num):
 
 execute_function = open_cam(user, password, ip_start, ip_end)
 
-if(str(execute_function.stderr).__contains__('failed')):
-  for number in range(10,50):
-    if (not str(open_cam(user, password, ip_start, number).stderr).__contains__('failed')):
-      execute_function
+if(str(execute_function.stderr).__contains__('Connection refused') or str(execute_function.stderr).__contains__('Bad Request')):
+  for number in range(10,30):
+    if (not str(execute_function.stderr).__contains__('Connection refused') or not str(execute_function.stderr).__contains__('Bad Request')):
       with open(file, 'w') as last_logged_ip:
         last_logged_ip.write(str(number))
+      execute_function
       break
