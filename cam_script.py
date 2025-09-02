@@ -19,12 +19,12 @@ def open_cam(user, password, ip_start, num):
   result = subprocess.run([command, arg1, arg2, arg3], capture_output=True)
   return result
 
-execute_function = open_cam(user, password, ip_start, ip_end)
+test_cam = str(open_cam(user, password, ip_start, ip_end).stderr)
 
-if(str(execute_function.stderr).__contains__('Connection refused') or str(execute_function.stderr).__contains__('Bad Request')):
+if 'failed' in test_cam or 'Bad Request' in test_cam:
   for number in range(10,30):
-    if (not str(execute_function.stderr).__contains__('Connection refused') or not str(execute_function.stderr).__contains__('Bad Request')):
+    test_cam = str(open_cam(user, password, ip_start, number).stderr)
+    if 'failed' not in test_cam and 'Bad Request' not in test_cam:
       with open(file, 'w') as last_logged_ip:
         last_logged_ip.write(str(number))
-      execute_function
       break
